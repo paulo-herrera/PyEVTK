@@ -38,11 +38,11 @@ def readme(fname):
 setup(
     name = 'evtk',
     version = '1.1.1',
-    description = 'Export data as binary VTK files',
-    long_description = readme('README.txt'),
+    description = 'Exports data as binary VTK files',
+    long_description = readme('README.md'),
     author = 'Paulo Herrera',
     author_email = 'pauloa.herrera@gmail.com',
-    url = 'https://bitbucket.org/pauloh/pyevtk',
+    url = 'https://github.com/paulo-herrera/PyEVTK.git',
     packages = ['evtk'],
     package_dir = {'evtk' : 'src'},
     package_data = {'evtk' :  ['LICENSE', 'examples/*.py']}

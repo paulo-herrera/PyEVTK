@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 # ***********************************************************************************
-# * Copyright 2010 - 2017 Paulo A. Herrera. All rights reserved.                    * 
+# * Copyright 2010 - 2019 Paulo A. Herrera. All rights reserved.                    * 
 # *                                                                                 *
 # * Redistribution and use in source and binary forms, with or without              *
 # * modification, are permitted provided that the following conditions are met:     *
@@ -66,5 +66,6 @@ offset[2] = 10
 ctype = np.zeros(3)
 ctype[0], ctype[1] = VtkTriangle.tid, VtkTriangle.tid
 ctype[2] = VtkQuad.tid
- 
-unstructuredGridToVTK("unstructured", x, y, z, connectivity = conn, offsets = offset, cell_types = ctype, cellData = None, pointData = None)
+
+comments = [ "comment 1", "comment 2" ]
+unstructuredGridToVTK("unstructured", x, y, z, connectivity = conn, offsets = offset, cell_types = ctype, cellData = None, pointData = None, comments = comments)

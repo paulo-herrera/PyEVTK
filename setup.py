@@ -1,5 +1,5 @@
 # ***********************************************************************************
-# * Copyright 2010-2017 Paulo A. Herrera. All rights reserved.                           * 
+# * Copyright 2010-2019 Paulo A. Herrera. All rights reserved.                           * 
 # *                                                                                 *
 # * Redistribution and use in source and binary forms, with or without              *
 # * modification, are permitted provided that the following conditions are met:     *
@@ -37,11 +37,11 @@ def readme(fname):
 
 setup(
     name = 'evtk',
-    version = '1.1.1',
+    version = '1.2.0',
     description = 'Exports data as binary VTK files',
     long_description = readme('README.md'),
     author = 'Paulo Herrera',
-    author_email = 'pauloa.herrera@gmail.com',
+    author_email = 'paulo.herrera.eirl@gmail.com',
     url = 'https://github.com/paulo-herrera/PyEVTK.git',
     packages = ['evtk'],
     package_dir = {'evtk' : 'src'},

@@ -1,5 +1,5 @@
 ﻿# ***********************************************************************************
-# * Copyright 2010 - 2016 Paulo A. Herrera. All rights reserved.                    * 
+# * Copyright 2010 - 2019 Paulo A. Herrera. All rights reserved.                    * 
 # *                                                                                 *
 # * Redistribution and use in source and binary forms, with or without              *
 # * modification, are permitted provided that the following conditions are met:     *

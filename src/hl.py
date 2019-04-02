@@ -1,5 +1,5 @@
 # ***********************************************************************************
-# * Copyright 2010 - 2016 Paulo A. Herrera. All rights reserved.                    * 
+# * Copyright 2010 - 2019 Paulo A. Herrera. All rights reserved.                    * 
 # *                                                                                 *
 # * Redistribution and use in source and binary forms, with or without              *
 # * modification, are permitted provided that the following conditions are met:     *
@@ -70,7 +70,7 @@ def _appendDataToFile(vtkFile, cellData, pointData):
 # =================================
 #       High level functions      
 # =================================
-def imageToVTK(path, origin = (0.0,0.0,0.0), spacing = (1.0,1.0,1.0), cellData = None, pointData = None ):
+def imageToVTK(path, origin = (0.0,0.0,0.0), spacing = (1.0,1.0,1.0), cellData = None, pointData = None, comments = None ):
     """ Exports data values as a rectangular image.
         
         PARAMETERS:
@@ -86,6 +86,7 @@ def imageToVTK(path, origin = (0.0,0.0,0.0), spacing = (1.0,1.0,1.0), cellData =
                       Arrays must have same dimension in each direction and 
                       they should be equal to the dimensions of the cell data plus one and
                       must contain only scalar data.
+            comments: list of comment strings, which will be added to the header section of the file.
          
          RETURNS:
             Full path to saved file.
@@ -109,6 +110,7 @@ def imageToVTK(path, origin = (0.0,0.0,0.0), spacing = (1.0,1.0,1.0), cellData =
 
     # Write data to file
     w = VtkFile(path, VtkImageData)
+    if comments: w.addComments(comments)
     w.openGrid(start = start, end = end, origin = origin, spacing = spacing)
     w.openPiece(start = start, end = end)
     _addDataToFile(w, cellData, pointData)
@@ -119,7 +121,7 @@ def imageToVTK(path, origin = (0.0,0.0,0.0), spacing = (1.0,1.0,1.0), cellData =
     return w.getFileName()
 
 # ==============================================================================
-def gridToVTK(path, x, y, z, cellData = None, pointData = None):
+def gridToVTK(path, x, y, z, cellData = None, pointData = None, comments = None):
     """
         Writes data values as a rectilinear or rectangular grid.
 
@@ -140,7 +142,8 @@ def gridToVTK(path, x, y, z, cellData = None, pointData = None):
                        Arrays must have same dimension in each direction and 
                        they should be equal to the dimensions of the cell data plus one and
                        must contain only scalar data.
-
+            comments: list of comment strings, which will be added to the header section of the file.
+            
         RETURNS:
             Full path to saved file.
 
@@ -164,6 +167,7 @@ def gridToVTK(path, x, y, z, cellData = None, pointData = None):
 
 
     w =  VtkFile(path, ftype)
+    if comments: w.addComments(comments)
     w.openGrid(start = start, end = end)
     w.openPiece(start = start, end = end)
 
@@ -193,7 +197,7 @@ def gridToVTK(path, x, y, z, cellData = None, pointData = None):
 
 
 # ==============================================================================
-def pointsToVTK(path, x, y, z, data = None):
+def pointsToVTK(path, x, y, z, data = None, comments = None ):
     """
         Export points and associated data as an unstructured grid.
 
@@ -203,7 +207,8 @@ def pointsToVTK(path, x, y, z, data = None):
             data: dictionary with variables associated to each point.
                   Keys should be the names of the variable stored in each array.
                   All arrays must have the same number of elements.
-
+            comments: list of comment strings, which will be added to the header section of the file.
+            
         RETURNS:
             Full path to saved file.
 
@@ -219,6 +224,7 @@ def pointsToVTK(path, x, y, z, data = None):
     cell_types[:] = VtkVertex.tid
 
     w = VtkFile(path, VtkUnstructuredGrid)
+    if comments: w.addComments(comments)
     w.openGrid()
     w.openPiece(ncells = npoints, npoints = npoints)
     
@@ -244,7 +250,7 @@ def pointsToVTK(path, x, y, z, data = None):
     return w.getFileName()
 
 # ==============================================================================
-def linesToVTK(path, x, y, z, cellData = None, pointData = None):
+def linesToVTK(path, x, y, z, cellData = None, pointData = None, comments = None ):
     """
         Export line segments that joint 2 points and associated data.
 
@@ -258,7 +264,8 @@ def linesToVTK(path, x, y, z, cellData = None, pointData = None):
             pointData: dictionary with variables associated to each vertex.
                   Keys should be the names of the variable stored in each array.
                   All arrays must have the same number of elements.
-
+            comments: list of comment strings, which will be added to the header section of the file.
+                  
         RETURNS:
             Full path to saved file.
 
@@ -278,6 +285,7 @@ def linesToVTK(path, x, y, z, cellData = None, pointData = None):
     cell_types[:] = VtkLine.tid
 
     w = VtkFile(path, VtkUnstructuredGrid)
+    if comments: w.addComments(comments)
     w.openGrid()
     w.openPiece(ncells = ncells, npoints = npoints)
     
@@ -303,7 +311,7 @@ def linesToVTK(path, x, y, z, cellData = None, pointData = None):
     return w.getFileName()
 
 # ==============================================================================
-def polyLinesToVTK(path, x, y, z, pointsPerLine, cellData = None, pointData = None):
+def polyLinesToVTK(path, x, y, z, pointsPerLine, cellData = None, pointData = None, comments = None ):
     """
         Export line segments that joint 2 points and associated data.
 
@@ -321,7 +329,8 @@ def polyLinesToVTK(path, x, y, z, pointsPerLine, cellData = None, pointData = No
             pointData: Dictionary with variables associated to each vertex.
                        Keys should be the names of the variable stored in each array.
                        All arrays must have the same number of elements.
-
+            comments: list of comment strings, which will be added to the header section of the file.
+            
         RETURNS:
             Full path to saved file.
 
@@ -343,6 +352,7 @@ def polyLinesToVTK(path, x, y, z, pointsPerLine, cellData = None, pointData = No
     cell_types[:] = VtkPolyLine.tid
 
     w = VtkFile(path, VtkUnstructuredGrid)
+    if comments: w.addComments(comments)
     w.openGrid()
     w.openPiece(ncells = ncells, npoints = npoints)
     
@@ -368,7 +378,7 @@ def polyLinesToVTK(path, x, y, z, pointsPerLine, cellData = None, pointData = No
     return w.getFileName()
 
 # ==============================================================================
-def unstructuredGridToVTK(path, x, y, z, connectivity, offsets, cell_types, cellData = None, pointData = None):
+def unstructuredGridToVTK(path, x, y, z, connectivity, offsets, cell_types, cellData = None, pointData = None, comments = None ):
     """
         Export unstructured grid and associated data.
 
@@ -390,7 +400,8 @@ def unstructuredGridToVTK(path, x, y, z, connectivity, offsets, cell_types, cell
             pointData: Dictionary with variables associated to each vertex.
                        Keys should be the names of the variable stored in each array.
                        All arrays must have the same number of elements.
-
+            comments: list of comment strings, which will be added to the header section of the file.
+            
         RETURNS:
             Full path to saved file.
 
@@ -401,6 +412,7 @@ def unstructuredGridToVTK(path, x, y, z, connectivity, offsets, cell_types, cell
     assert (offsets.size == ncells)
     
     w = VtkFile(path, VtkUnstructuredGrid)
+    if comments: w.addComments(comments)
     w.openGrid()
     w.openPiece(ncells = ncells, npoints = npoints)
     
@@ -426,7 +438,7 @@ def unstructuredGridToVTK(path, x, y, z, connectivity, offsets, cell_types, cell
     return w.getFileName()
     
 # ==============================================================================
-def cylinderToVTK(path, x0, y0, z0, z1, radius, nlayers, npilars = 16, cellData=None, pointData=None):
+def cylinderToVTK(path, x0, y0, z0, z1, radius, nlayers, npilars = 16, cellData=None, pointData=None, comments = None ):
     """
         Export cylinder as VTK unstructured grid.
     
@@ -442,7 +454,8 @@ def cylinderToVTK(path, x0, y0, z0, z1, radius, nlayers, npilars = 16, cellData=
                   Arrays should have number of elements equal to ncells = npilars * nlayers.
         pointData: dictionary with 1D arrays that store point data.
                   Arrays should have number of elements equal to npoints = npilars * (nlayers + 1).
-        
+        comments: list of comment strings, which will be added to the header section of the file.
+                    
       RETURNS: 
             Full path to saved file.
         
@@ -506,4 +519,4 @@ def cylinderToVTK(path, x0, y0, z0, z1, radius, nlayers, npilars = 16, cellData=
     # Define cell types
     ctype = np.ones(ncells) + VtkPixel.tid
     
-    return unstructuredGridToVTK(path, xx, yy, zz, connectivity = conn, offsets = offsets, cell_types = ctype, cellData = cellData, pointData = pointData)
+    return unstructuredGridToVTK(path, xx, yy, zz, connectivity = conn, offsets = offsets, cell_types = ctype, cellData = cellData, pointData = pointData, comments = comments)

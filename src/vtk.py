@@ -1,5 +1,5 @@
 # ***********************************************************************************
-# * Copyright 2010 - 2016 Paulo A. Herrera. All rights reserved.                    * 
+# * Copyright 2010 - 2019 Paulo A. Herrera. All rights reserved.                    * 
 # *                                                                                 *
 # * Redistribution and use in source and binary forms, with or without              *
 # * modification, are permitted provided that the following conditions are met:     *
@@ -206,6 +206,16 @@ class VtkFile:
                                                           byte_order = _get_byte_order(),
                                                           header_type = "UInt64")
 
+    def addComments(self, comments):
+        """ Insert strings stored in comments list as comments into the xml header section of the file. 
+            This method does not make any check for forbidden or special characters in XML comments. 
+            This method should be called right after creating the file to avoid including comments in the 
+            wrong place within the header. BE AWARE!!!
+        """
+        assert not self.appendedDataIsOpen
+        for c in comments:
+            self.xml.addComment(c)
+        
     def getFileName(self):
         """ Returns absolute path to this file. """
         return  os.path.abspath(self.filename)

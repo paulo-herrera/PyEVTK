@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 # ***********************************************************************************
-# * Copyright 2010 - 2016 Paulo A. Herrera. All rights reserved.                    * 
+# * Copyright 2010 - 2019 Paulo A. Herrera. All rights reserved.                    * 
 # *                                                                                 *
 # * Redistribution and use in source and binary forms, with or without              *
 # * modification, are permitted provided that the following conditions are met:     *
@@ -64,4 +64,5 @@ for k in range(nz + 1):
 pressure = np.random.rand(ncells).reshape( (nx, ny, nz))
 temp = np.random.rand(npoints).reshape( (nx + 1, ny + 1, nz + 1))
 
-gridToVTK("./structured", x, y, z, cellData = {"pressure" : pressure}, pointData = {"temp" : temp})
+comments = [ "comment 1", "comment 2" ]
+gridToVTK("./structured", x, y, z, cellData = {"pressure" : pressure}, pointData = {"temp" : temp}, comments = comments)

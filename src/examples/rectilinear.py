@@ -50,4 +50,5 @@ z = np.arange(0, lz + 0.1*dz, dz, dtype='float64')
 pressure = np.random.rand(ncells).reshape( (nx, ny, nz))
 temp = np.random.rand(npoints).reshape( (nx + 1, ny + 1, nz + 1))
 
-gridToVTK("./rectilinear", x, y, z, cellData = {"pressure" : pressure}, pointData = {"temp" : temp})
+comments = [ "comment 1", "comment 2" ]
+gridToVTK("./rectilinear", x, y, z, cellData = {"pressure" : pressure}, pointData = {"temp" : temp}, comments = comments)

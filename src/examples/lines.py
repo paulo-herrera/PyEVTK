@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 # ***********************************************************************************
-# * Copyright 2010 - 2016 Paulo A. Herrera. All rights reserved.                    * 
+# * Copyright 2010 - 2019 Paulo A. Herrera. All rights reserved.                    * 
 # *                                                                                 *
 # * Redistribution and use in source and binary forms, with or without              *
 # * modification, are permitted provided that the following conditions are met:     *
@@ -48,6 +48,7 @@ x[1], y[1], z[1] = 1.0, 1.0, 1.0
 x[2], y[2], z[2] = 0.0, 0.0, 0.0
 x[3], y[3], z[3] = -1.0, 1.0, 1.0
 
-linesToVTK("./lines", x, y, z, cellData = {"vel" : vel}, pointData = {"temp" : temp, "pressure" : pressure})
+comments = [ "comment 1", "comment 2" ]
+linesToVTK("./lines", x, y, z, cellData = {"vel" : vel}, pointData = {"temp" : temp, "pressure" : pressure}, comments = comments)
 
 

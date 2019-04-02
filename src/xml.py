@@ -1,5 +1,5 @@
 # ***********************************************************************************
-# * Copyright 2010 - 2016 Paulo A. Herrera. All rights reserved                     * 
+# * Copyright 2010 - 2019 Paulo A. Herrera. All rights reserved                     * 
 # *                                                                                 *
 # * Redistribution and use in source and binary forms, with or without              *
 # * modification, are permitted provided that the following conditions are met:     *
@@ -35,6 +35,18 @@ class XmlWriter:
         self.current = []
         if (addDeclaration): self.addDeclaration()
 
+    def addComment(self, sstr):
+        """ Adds (open and close) a single comment contained in string sstr. 
+            TODO: Add a smart check for the position of the comments in the file. For now,
+                  we rely on the caller.
+        """
+        if self.openTag: 
+            self.stream.write(b">")
+            self.openTag = False
+        self.stream.write(b'\n<!-- ') # new line is not strictly necessary
+        self.stream.write(sstr)
+        self.stream.write(b' -->')    # new line here is not necessary?
+        
     def close(self):
         assert(not self.openTag)
         self.stream.close()

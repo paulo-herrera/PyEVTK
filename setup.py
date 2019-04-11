@@ -27,9 +27,10 @@
 #try:
 #    from setuptools import setup
 #except ImportError:
-from distutils.core import setup
+from distutils.core import setup, findpackages
 
 import numpy as np
+from src.version import PYEVTK_VERSION
 
 def readme(fname):
     with open(fname, 'r') as f:
@@ -37,14 +38,19 @@ def readme(fname):
 
 setup(
     name = 'evtk',
-    version = '1.2.0',
+    version = PYEVTK_VERSION,
     description = 'Exports data as binary VTK files',
     long_description = readme('README.md'),
     author = 'Paulo Herrera',
     author_email = 'paulo.herrera.eirl@gmail.com',
     url = 'https://github.com/paulo-herrera/PyEVTK.git',
-    packages = ['evtk'],
+    packages = find_packages(), #['evtk'],
     package_dir = {'evtk' : 'src'},
-    package_data = {'evtk' :  ['LICENSE', 'examples/*.py']}
+    package_data = {'evtk' :  ['LICENSE', 'examples/*.py']},
+    project_urls={
+        "Bug Tracker": "https://github.com/paulo-herrera/PyEVTK",
+        "Documentation": "https://github.com/paulo-herrera/PyEVTK",
+        "Source Code": "https://github.com/paulo-herrera/PyEVTK",
+    }
 )
 

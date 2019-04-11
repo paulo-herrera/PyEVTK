@@ -11,7 +11,7 @@ it is straightforwrd to install and run in any system where Python is installed.
 EVTK provides low and high level interfaces.  While the low level interface 
 can be used to export data that is stored in any type of container, the high 
 level functions make easy to export data stored in Numpy arrays.
-
+    
 INSTALLATION:
 =============
 
@@ -77,10 +77,12 @@ That should create a points.vtu file in the current directory.
 SUPPORT:
 =======
 
-I will continue releasing this package as open source, so it is free to be used in any kind of project.
-I will also continue providing support for simple questions and making incremental improvements as time
-allows. However, I also  provide contract based support for commercial or research projects interested 
-in this package or in topics related to data analysis and scientific programming with Python, Java, MATLAB/Octave, C/C++ or Fortran. 
+I will continue releasing this package as open source, so it is free to be used 
+in any kind of project. I will also continue providing support for simple questions 
+and making incremental improvements as time allows. However, I also  provide 
+contract based support for commercial or research projects interested in this 
+package and/or I am open to discuss possible commercial licensing.
+
 For further details, please contact me to: paulo.herrera.eirl@gmail.com.
 
 **NOTE: PyEVTK moved to GitHub. The new official page is this one (https://github.com/paulo-herrera/PyEVTK)**

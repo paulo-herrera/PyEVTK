@@ -37,7 +37,7 @@ import numpy as np
 def _addDataToFile(vtkFile, cellData, pointData):
     # Point data
     if pointData:
-        keys = list(pointData.keys())
+        keys = sorted(list(pointData.keys()))
         vtkFile.openData("Point", scalars = keys[0])
         for key in keys:
             data = pointData[key]
@@ -46,7 +46,7 @@ def _addDataToFile(vtkFile, cellData, pointData):
 
     # Cell data
     if cellData:
-        keys = list(cellData.keys())
+        keys = sorted(list(cellData.keys()))
         vtkFile.openData("Cell", scalars = keys[0])
         for key in keys:
             data = cellData[key]

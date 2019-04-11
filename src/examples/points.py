@@ -40,7 +40,8 @@ z = np.random.rand(npoints)
 pressure = np.random.rand(npoints)
 temp = np.random.rand(npoints)
 comments = [ "comment 1", "comment 2" ]
-pointsToVTK("./rnd_points", x, y, z, data = {"temp" : temp, "pressure" : pressure}, comments = comments)
+# keys are sorted before exporting, hence it is useful to prefix a number to determine an order
+pointsToVTK("./rnd_points", x, y, z, data = {"1_temp" : temp, "2_pressure" : pressure}, comments = comments) 
 
 # Example 2
 x = np.arange(1.0,10.0,0.1)

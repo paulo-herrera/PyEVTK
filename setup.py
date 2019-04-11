@@ -27,7 +27,7 @@
 #try:
 #    from setuptools import setup
 #except ImportError:
-from distutils.core import setup, findpackages
+from distutils.core import setup
 
 import numpy as np
 from src.version import PYEVTK_VERSION
@@ -44,7 +44,7 @@ setup(
     author = 'Paulo Herrera',
     author_email = 'paulo.herrera.eirl@gmail.com',
     url = 'https://github.com/paulo-herrera/PyEVTK.git',
-    packages = find_packages(), #['evtk'],
+    packages = ['evtk'],
     package_dir = {'evtk' : 'src'},
     package_data = {'evtk' :  ['LICENSE', 'examples/*.py']},
     project_urls={

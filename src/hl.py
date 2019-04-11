@@ -56,13 +56,13 @@ def _addDataToFile(vtkFile, cellData, pointData):
 def _appendDataToFile(vtkFile, cellData, pointData):
     # Append data to binary section
     if pointData != None:
-        keys = list(pointData.keys())
+        keys = sorted(list(pointData.keys()))
         for key in keys:
             data = pointData[key]
             vtkFile.appendData(data)
 
     if cellData != None:
-        keys = list(cellData.keys())
+        keys = sorted(list(cellData.keys()))
         for key in keys:
             data = cellData[key]
             vtkFile.appendData(data)

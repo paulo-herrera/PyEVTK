@@ -84,6 +84,12 @@ To test the package one can run some of the examples, e.g.:
 
 That should create a points.vtu file in the current directory.
 
+## CONTRIBUTE:
+
+I am open to incorporate bug fixes and additional improvements contributed by other
+developers. As a non-native English speaker, I would also appreciate proof reading of
+the this page and interesting pictures of grids exported using EVTK.
+
 # SUPPORT:
 
 I will continue releasing this package as open source, so it is free to be used 

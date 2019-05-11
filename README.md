@@ -9,7 +9,9 @@ Since version 0.9 the package is composed only of a set of pure Python files, he
 it is straightforwrd to install and run in any system where Python is installed.
 EVTK provides low and high level interfaces.  While the low level interface 
 can be used to export data that is stored in any type of container, the high 
-level functions make easy to export data stored in Numpy arrays.
+level functions make easy to export data stored in Numpy arrays. Since version 1.3.1,
+some of the high level functions that expect 1D list-type objects, e.g. pointsToVTK, 
+accept list or tuples as input that are internally converted (copied) to Numpy arrays.
 
 # EXAMPLE
 

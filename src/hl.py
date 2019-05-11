@@ -67,6 +67,24 @@ def _appendDataToFile(vtkFile, cellData, pointData):
             data = cellData[key]
             vtkFile.appendData(data)
 
+def __convertListToArray(data):
+    ''' If data is a list and no a Numpy array, then it convert it
+        to an array, otherwise return the same array '''
+    if !isinstance(data, np.ndarray):
+        assert isintance(data, (list, tuple))
+        return np.array(data)
+    else:
+        return data
+
+def __convertDictListToArrays(data):
+    ''' If data in dictironary are lists and no a Numpy array,
+        then it creates a new dictionary and convert the list to arrays,
+        otherwise return the same dictionary '''
+    dict = {}
+    for k, d in data.items():
+        dict[k] = __convertListToArrays(d)
+    return dict
+        
 # =================================
 #       High level functions      
 # =================================
@@ -203,10 +221,10 @@ def pointsToVTK(path, x, y, z, data = None, comments = None ):
 
         PARAMETERS:
             path: name of the file without extension where data should be saved.
-            x, y, z: 1D arrays with coordinates of the points.
+            x, y, z: 1D list-type object (list, tuple or numpy) with coordinates of the points.
             data: dictionary with variables associated to each point.
                   Keys should be the names of the variable stored in each array.
-                  All arrays must have the same number of elements.
+                  All 1D list-type object (list, tuple or numpy) must have the same number of elements.
             comments: list of comment strings, which will be added to the header section of the file.
             
         RETURNS:
@@ -214,6 +232,11 @@ def pointsToVTK(path, x, y, z, data = None, comments = None ):
 
     """
     assert (x.size == y.size == z.size)
+    x = __convertListToArray(x)
+    y = __convertListToArray(y)
+    z = __convertListToArray(z)
+    data = __convertDictListToArrays(data)
+    
     npoints = x.size
     
     # create some temporary arrays to write grid topology
@@ -260,10 +283,10 @@ def pointsToVTKAsTIN(path, x, y, z, data = None, comments = None, ndim = 2):
 
         PARAMETERS:
             path: name of the file without extension where data should be saved.
-            x, y, z: 1D arrays with coordinates of the points.
+            x, y, z: 1D list-type object (list, tuple or numpy) with coordinates of the points.
             data: dictionary with variables associated to each point.
                   Keys should be the names of the variable stored in each array.
-                  All arrays must have the same number of elements.
+                  All 1D list-type object (list, tuple or numpy) must have the same number of elements.
             comments: list of comment strings, which will be added to the header section of the file.
             ndim: is the number of dimensions considered when calling Delaunay.
                   If ndim = 2, then only coordinates x and y are passed.
@@ -280,6 +303,10 @@ def pointsToVTKAsTIN(path, x, y, z, data = None, comments = None, ndim = 2):
 
     assert len(x) == len(y) and len(x) == len(z)
     assert (ndim == 2) or (ndim == 3)
+    x = __convertListToArray(x)
+    y = __convertListToArray(y)
+    z = __convertListToArray(z)
+    data = __convertDictListToArrays(data)
     
     npts = len(x)
     
@@ -313,14 +340,14 @@ def linesToVTK(path, x, y, z, cellData = None, pointData = None, comments = None
 
         PARAMETERS:
             path: name of the file without extension where data should be saved.
-            x, y, z: 1D arrays with coordinates of the vertex of the lines. It is assumed that each line.
+            x, y, z: 1D list-type object (list, tuple or numpy) with coordinates of the vertex of the lines. It is assumed that each line.
                      is defined by two points, then the lenght of the arrays should be equal to 2 * number of lines.
             cellData: dictionary with variables associated to each line.
                   Keys should be the names of the variable stored in each array.
-                  All arrays must have the same number of elements.         
+                  All 1D list-type object (list, tuple or numpy) must have the same number of elements.         
             pointData: dictionary with variables associated to each vertex.
                   Keys should be the names of the variable stored in each array.
-                  All arrays must have the same number of elements.
+                  All 1D list-type object (list, tuple or numpy) must have the same number of elements.
             comments: list of comment strings, which will be added to the header section of the file.
                   
         RETURNS:
@@ -329,8 +356,15 @@ def linesToVTK(path, x, y, z, cellData = None, pointData = None, comments = None
     """
     assert (x.size == y.size == z.size)
     assert (x.size % 2 == 0)
-    npoints = x.size
-    ncells = x.size / 2
+    
+    x = __convertListToArray(x)
+    y = __convertListToArray(y)
+    z = __convertListToArray(z)
+    cellData = __convertDictListToArrays(cellData)
+    pointData = __convertDictListToArrays(pointData)
+    
+    npoints = len(x)
+    ncells = int(len(x) / 2.0)
     
     # Check cellData has the same size that the number of cells
     
@@ -374,18 +408,18 @@ def polyLinesToVTK(path, x, y, z, pointsPerLine, cellData = None, pointData = No
 
         PARAMETERS:
             path: name of the file without extension where data should be saved.
-            x, y, z: 1D arrays with coordinates of the vertices of the lines. It is assumed that each line.
+            x, y, z: 1D list-type object (list, tuple or numpy) arrays with coordinates of the vertices of the lines. It is assumed that each line.
                      has diffent number of points.
-            pointsPerLine: 1D array that defines the number of points associated to each line. Thus, 
+            pointsPerLine: 1D list-type object (list, tuple or numpy) array that defines the number of points associated to each line. Thus, 
                            the length of this array define the number of lines. It also implicitly 
                            defines the connectivity or topology of the set of lines. It is assumed 
                            that points that define a line are consecutive in the x, y and z arrays.
             cellData: Dictionary with variables associated to each line.
                       Keys should be the names of the variable stored in each array.
-                      All arrays must have the same number of elements.         
+                      All 1D list-type object (list, tuple or numpy) must have the same number of elements.         
             pointData: Dictionary with variables associated to each vertex.
                        Keys should be the names of the variable stored in each array.
-                       All arrays must have the same number of elements.
+                       1D list-type object (list, tuple or numpy) must have the same number of elements.
             comments: list of comment strings, which will be added to the header section of the file.
             
         RETURNS:
@@ -393,7 +427,14 @@ def polyLinesToVTK(path, x, y, z, pointsPerLine, cellData = None, pointData = No
 
     """
     assert (x.size == y.size == z.size)
-    npoints = x.size
+    
+    x = __convertListToArray(x)
+    y = __convertListToArray(y)
+    z = __convertListToArray(z)
+    cellData = __convertDictListToArrays(cellData)
+    pointData = __convertDictListToArrays(pointData)
+    
+    npoints = len(x)
     ncells = pointsPerLine.size
     
     # create some temporary arrays to write grid topology
@@ -441,22 +482,22 @@ def unstructuredGridToVTK(path, x, y, z, connectivity, offsets, cell_types, cell
 
         PARAMETERS:
             path: name of the file without extension where data should be saved.
-            x, y, z: 1D arrays with coordinates of the vertices of cells. It is assumed that each element
+            x, y, z: 1D list-type object (list, tuple or numpy) with coordinates of the vertices of cells. It is assumed that each element
                      has diffent number of vertices.
-            connectivity: 1D array that defines the vertices associated to each element. 
+            connectivity: 1D list-type object (list, tuple or numpy) that defines the vertices associated to each element. 
                           Together with offset define the connectivity or topology of the grid. 
                           It is assumed that vertices in an element are listed consecutively.
-            offsets: 1D array with the index of the last vertex of each element in the connectivity array.
+            offsets: 1D list-type object (list, tuple or numpy) with the index of the last vertex of each element in the connectivity array.
                      It should have length nelem, where nelem is the number of cells or elements in the grid.
-            cell_types: 1D array with an integer that defines the cell type of each element in the grid.
+            cell_types: 1D list-type object (list, tuple or numpy) with an integer that defines the cell type of each element in the grid.
                         It should have size nelem. This should be assigned from evtk.vtk.VtkXXXX.tid, where XXXX represent
                         the type of cell. Please check the VTK file format specification for allowed cell types.                       
             cellData: Dictionary with variables associated to each line.
                       Keys should be the names of the variable stored in each array.
-                      All arrays must have the same number of elements.        
+                      All 1D list-type object (list, tuple or numpy) must have the same number of elements.        
             pointData: Dictionary with variables associated to each vertex.
                        Keys should be the names of the variable stored in each array.
-                       All arrays must have the same number of elements.
+                       All 1D list-type object (list, tuple or numpy) must have the same number of elements.
             comments: list of comment strings, which will be added to the header section of the file.
             
         RETURNS:
@@ -464,6 +505,15 @@ def unstructuredGridToVTK(path, x, y, z, connectivity, offsets, cell_types, cell
 
     """
     assert (x.size == y.size == z.size)
+    x = __convertListToArray(x)
+    y = __convertListToArray(y)
+    z = __convertListToArray(z)
+    connectivity = __convertListToArray(connectivity)
+    offsets = __convertListToArray(offsets)
+    cell_types = __convertListToArray(cell_types)
+    cellData = __convertDictListToArrays(cellData)
+    pointData = __convertDictListToArrays(pointData)
+    
     npoints = x.size
     ncells = cell_types.size
     assert (offsets.size == ncells)

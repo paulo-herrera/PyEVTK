@@ -1,5 +1,4 @@
-INTRODUCTION:
-=============
+# INTRODUCTION
 
 EVTK (Export VTK) package allows exporting data to binary VTK files for
 visualization and data analysis with any of the visualization packages that
@@ -12,22 +11,39 @@ EVTK provides low and high level interfaces.  While the low level interface
 can be used to export data that is stored in any type of container, the high 
 level functions make easy to export data stored in Numpy arrays.
 
+# EXAMPLE
+
+To export an open pit given a set of x, y, z coordinates, use:
+
+```
+ndim = 2 #only consider x, y coordinates to create the triangulation
+pointsToVTKAsTIN("./rnd_points_TIN", x, y, z, ndim = ndim, data = {"1_temp" : temp, "2_pressure" : pressure}, comments = comments)
+```
+
 ![Optional Text](./images/open_pit.png)
 
-INSTALLATION:
-=============
+# INSTALLATION
 
 Go to the source directory and type:
 python setup.py install
 
-DOCUMENTATION:
-==============
+# DOCUMENTATION
 
 This file together with the included examples in the examples directory in the
 source tree provide enough information to start using the package.
 
-DESIGN GUIDELINES:
-==================
+# REQUIREMENTS
+
+    - Numpy. Tested with Numpy 1.8.0 to 1.13.3.
+    - Scipy only to export points as a triangular irregular network (TIN).
+      Tested with Scipy 1.2.
+
+It is compatible with both Python 2 (2.7+) and Python 3 (3.3+). Since version 0.9 it is only compatible
+with VTK 6.0 and newer versions.
+
+# DEVELOPMENT
+
+## DESIGN GUIDELINES:
 
 The design of the package considered the following objectives:
 
@@ -50,18 +66,7 @@ post-processing tools. Thus, good performance is important to handle the results
 of large simulations.  However, latest versions give priority to ease of installation
 and use over performance.
 
-REQUIREMENTS:
-=============
-
-    - Numpy. Tested with Numpy 1.8.0 to 1.13.3.
-    - Scipy only to export points as a triangular irregular network (TIN).
-      Tested with Scipy 1.2.
-
-It is compatible with both Python 2 (2.7+) and Python 3 (3.3+). Since version 0.9 it is only compatible
-with VTK 6.0 and newer versions.
-
-DEVELOPER NOTES:
-================
+## DEVELOPER NOTES:
 
 It is useful to build and install the package to a temporary location without
 touching the global python site-packages directory while developing. To do
@@ -78,8 +83,7 @@ To test the package one can run some of the examples, e.g.:
 
 That should create a points.vtu file in the current directory.
 
-SUPPORT:
-=======
+# SUPPORT:
 
 I will continue releasing this package as open source, so it is free to be used 
 in any kind of project. I will also continue providing support for simple questions 

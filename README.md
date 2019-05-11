@@ -18,7 +18,7 @@ To export the topography of an open pit (excavation) given a set of x, y, z coor
 ```
 # Consider only x and y coordinates to create the triangulation
 ndim = 2 
-pointsToVTKAsTIN("./rnd_points_TIN", x, y, z, ndim = ndim, data = {"1_temp" : temp}, comments = comments)
+pointsToVTKAsTIN("./open_pit", x, y, z, ndim = ndim, data = {"1_temp" : temp}, comments = comments)
 ```
 
 <a href="url"><img src="https://github.com/paulo-herrera/PyEVTK/blob/master/images/open_pit.png" align="center" height="400" width="550" ></a>

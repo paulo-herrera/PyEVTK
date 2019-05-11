@@ -52,6 +52,8 @@ REQUIREMENTS:
 =============
 
     - Numpy. Tested with Numpy 1.8.0 to 1.13.3.
+    - Scipy only to export points as a triangular irregular network (TIN).
+      Tested with Scipy 1.2.
 
 It is compatible with both Python 2 (2.7+) and Python 3 (3.3+). Since version 0.9 it is only compatible
 with VTK 6.0 and newer versions.

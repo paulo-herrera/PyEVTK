@@ -13,14 +13,15 @@ level functions make easy to export data stored in Numpy arrays.
 
 # EXAMPLE
 
-To export an open pit given a set of x, y, z coordinates, use:
+To export the topography of an open pit (excavation) given a set of x, y, z coordinates, use:
 
 ```
-ndim = 2 #only consider x, y coordinates to create the triangulation
-pointsToVTKAsTIN("./rnd_points_TIN", x, y, z, ndim = ndim, data = {"1_temp" : temp, "2_pressure" : pressure}, comments = comments)
+# Consider only x and y coordinates to create the triangulation
+ndim = 2 
+pointsToVTKAsTIN("./rnd_points_TIN", x, y, z, ndim = ndim, data = {"1_temp" : temp}, comments = comments)
 ```
 
-![Optional Text](./images/open_pit.png)
+<a href="url"><img src="https://github.com/paulo-herrera/PyEVTK/blob/master/images/open_pit.png" align="center" height="400" width="550" ></a>
 
 # INSTALLATION
 

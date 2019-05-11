@@ -67,23 +67,26 @@ def _appendDataToFile(vtkFile, cellData, pointData):
             data = cellData[key]
             vtkFile.appendData(data)
 
-def __convertListToArray(data):
+def __convertListToArray(list1d):
     ''' If data is a list and no a Numpy array, then it convert it
         to an array, otherwise return the same array '''
-    if !isinstance(data, np.ndarray):
-        assert isintance(data, (list, tuple))
-        return np.array(data)
+    if (list1d is not None) and (not type(list1d).__name__ == "ndarray"):
+        assert isinstance(list1d, (list, tuple))
+        return np.array(list1d)
     else:
-        return data
+        return list1d
 
 def __convertDictListToArrays(data):
     ''' If data in dictironary are lists and no a Numpy array,
         then it creates a new dictionary and convert the list to arrays,
         otherwise return the same dictionary '''
-    dict = {}
-    for k, d in data.items():
-        dict[k] = __convertListToArrays(d)
-    return dict
+    if data is not None:
+        dict = {}
+        for k, list1d in data.items():
+            dict[k] = __convertListToArray(list1d)
+        return dict
+    else:
+        return data # None
         
 # =================================
 #       High level functions      
@@ -231,13 +234,13 @@ def pointsToVTK(path, x, y, z, data = None, comments = None ):
             Full path to saved file.
 
     """
-    assert (x.size == y.size == z.size)
+    assert (len(x) == len(y) == len(z) )
     x = __convertListToArray(x)
     y = __convertListToArray(y)
     z = __convertListToArray(z)
     data = __convertDictListToArrays(data)
     
-    npoints = x.size
+    npoints = len(x)
     
     # create some temporary arrays to write grid topology
     offsets = np.arange(start = 1, stop = npoints + 1, dtype = 'int32')   # index of last node in each cell

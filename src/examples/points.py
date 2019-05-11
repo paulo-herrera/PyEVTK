@@ -56,3 +56,14 @@ z = np.arange(1.0,10.0,0.1)
 comments = [ "comment 1", "comment 2" ]
 pointsToVTK("./line_points", x, y, z, data = {"elev" : z}, comments = comments)
 
+# Example 4: Point set of 5 points
+x = [0.0, 1.0, 0.5, 0.368, 0.4]
+y = [0.3, 2.0, 0.7, 0.1, 0.6]
+z = [1.0, 1.0, 0.3, 0.75, 0.9]
+pressure = [1.0, 2.0, 3.0, 4.0, 5.0]
+temp = [1.0, 2.0, 3.0, 4.0, 5.0]
+comments = [ "comment 1", "comment 2" ]
+
+# keys are sorted before exporting, hence it is useful to prefix a number to determine an order
+pointsToVTK("./points_as_lists", x, y, z, data = {"1_temp" : temp, "2_pressure" : pressure}, comments = comments) 
+

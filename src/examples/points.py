@@ -29,10 +29,10 @@
 # * Example of how to use the high level pointsToVTK function. *
 # **************************************************************
 
-from evtk.hl import pointsToVTK
+from evtk.hl import pointsToVTK, pointsToVTKAsTIN
 import numpy as np
 
-# Example 1
+# Example 1: Random point set
 npoints = 100
 x = np.random.rand(npoints)
 y = np.random.rand(npoints)
@@ -40,10 +40,15 @@ z = np.random.rand(npoints)
 pressure = np.random.rand(npoints)
 temp = np.random.rand(npoints)
 comments = [ "comment 1", "comment 2" ]
+
 # keys are sorted before exporting, hence it is useful to prefix a number to determine an order
 pointsToVTK("./rnd_points", x, y, z, data = {"1_temp" : temp, "2_pressure" : pressure}, comments = comments) 
 
-# Example 2
+# Example 2: Export as TIN
+ndim = 2 #only consider x, y coordinates to create the triangulation
+pointsToVTKAsTIN("./rnd_points_TIN", x, y, z, ndim = ndim, data = {"1_temp" : temp, "2_pressure" : pressure}, comments = comments)
+
+# Example 3: Regular point set
 x = np.arange(1.0,10.0,0.1)
 y = np.arange(1.0,10.0,0.1)
 z = np.arange(1.0,10.0,0.1)

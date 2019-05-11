@@ -248,7 +248,64 @@ def pointsToVTK(path, x, y, z, data = None, comments = None ):
 
     w.save()
     return w.getFileName()
+    
+# ==============================================================================
+def pointsToVTKAsTIN(path, x, y, z, data = None, comments = None, ndim = 2):
+    """
+        Export points and associated data as a triangula irregular grid.
+        It builds a triangular grid that has the input points as nodes
+        using the Delaunay triangulation function in Scipy, which requires
+        a convex set of points (check the documentation for further details
+        https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.Delaunay.html).
 
+        PARAMETERS:
+            path: name of the file without extension where data should be saved.
+            x, y, z: 1D arrays with coordinates of the points.
+            data: dictionary with variables associated to each point.
+                  Keys should be the names of the variable stored in each array.
+                  All arrays must have the same number of elements.
+            comments: list of comment strings, which will be added to the header section of the file.
+            ndim: is the number of dimensions considered when calling Delaunay.
+                  If ndim = 2, then only coordinates x and y are passed.
+                  If ndim = 3, then x, y and z coordinates are passed.
+            
+        RETURNS:
+            Full path to saved file.
+        
+        REQUIRES: Scipy > 1.2.
+    """
+    # TODO: Check if it makes and it would be possible to add cellData.
+    
+    from scipy.spatial import Delaunay
+
+    assert len(x) == len(y) and len(x) == len(z)
+    assert (ndim == 2) or (ndim == 3)
+    
+    npts = len(x)
+    
+    points = np.zeros( (npts, ndim) ) # needs to create the 2D or 3D temporary array to call Delaunay
+    for i in range(npts):
+        points[i,0] = x[i]
+        points[i,1] = y[i]
+        if ndim > 2: points[i,2] = z[i]
+        
+    tri = Delaunay(points)
+        
+    # list of triangles that form the tesselation
+    ncells, npoints_per_cell = tri.simplices.shape[0], tri.simplices.shape[1]
+    conn =  np.zeros(ncells * 3)
+    for i in range(ncells):
+        ii = i * 3
+        conn[ii]     = tri.simplices[i,0]
+        conn[ii + 1] = tri.simplices[i,1]
+        conn[ii + 2] = tri.simplices[i,2]
+        
+    offset = np.zeros(ncells)
+    for i in range(ncells): offset[i] = (i + 1) * 3
+        
+    cell_type = np.ones(ncells) * VtkTriangle.tid
+    unstructuredGridToVTK(path, x, y, z, connectivity = conn, offsets = offset, cell_types = cell_type, cellData = None, pointData = {"Elevation" : z}, comments = None)
+        
 # ==============================================================================
 def linesToVTK(path, x, y, z, cellData = None, pointData = None, comments = None ):
     """

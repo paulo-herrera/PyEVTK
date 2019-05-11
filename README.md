@@ -11,7 +11,9 @@ it is straightforwrd to install and run in any system where Python is installed.
 EVTK provides low and high level interfaces.  While the low level interface 
 can be used to export data that is stored in any type of container, the high 
 level functions make easy to export data stored in Numpy arrays.
-    
+
+![Optional Text](./images/open_pit.png)
+
 INSTALLATION:
 =============
 

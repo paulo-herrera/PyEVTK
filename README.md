@@ -13,6 +13,10 @@ level functions make easy to export data stored in Numpy arrays. Since version 1
 some of the high level functions that expect 1D list-type objects, e.g. pointsToVTK, 
 accept list or tuples as input that are internally converted (copied) to Numpy arrays.
 
+**NEW:** If you are a Java user or are interested in an alternative to Python, you
+         can check JEVTK (https://github.com/paulo-herrera/JEVTK), 
+         which is a Java version of EVTK.
+
 # EXAMPLE
 
 To export the topography of an open pit (excavation) given a set of x, y, z coordinates, use:
@@ -96,9 +100,7 @@ the this page and interesting pictures of grids exported using EVTK.
 
 I will continue releasing this package as open source, so it is free to be used 
 in any kind of project. I will also continue providing support for simple questions 
-and making incremental improvements as time allows. However, I also  provide 
-contract based support for commercial or research projects interested in this 
-package and/or I am open to discuss possible commercial licensing.
+and making incremental improvements as time allows. 
 
 For further details, please contact me to: paulo.herrera.eirl@gmail.com.
 

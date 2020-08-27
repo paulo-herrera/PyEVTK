@@ -323,17 +323,17 @@ def pointsToVTKAsTIN(path, x, y, z, data = None, comments = None, ndim = 2):
         
     # list of triangles that form the tesselation
     ncells, npoints_per_cell = tri.simplices.shape[0], tri.simplices.shape[1]
-    conn =  np.zeros(ncells * 3)
+    conn =  np.zeros(ncells * 3, dtype=np.int32)
     for i in range(ncells):
         ii = i * 3
         conn[ii]     = tri.simplices[i,0]
         conn[ii + 1] = tri.simplices[i,1]
         conn[ii + 2] = tri.simplices[i,2]
         
-    offset = np.zeros(ncells)
+    offset = np.zeros(ncells, dtype=np.int32)
     for i in range(ncells): offset[i] = (i + 1) * 3
         
-    cell_type = np.ones(ncells) * VtkTriangle.tid
+    cell_type = np.ones(ncells, dtype=np.uint8) * VtkTriangle.tid
     unstructuredGridToVTK(path, x, y, z, connectivity = conn, offsets = offset, cell_types = cell_type, cellData = None, pointData = {"Elevation" : z}, comments = None)
         
 # ==============================================================================

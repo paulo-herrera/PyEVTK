@@ -28,8 +28,6 @@
 #    from setuptools import setup
 #except ImportError:
 from distutils.core import setup
-
-import numpy as np
 from src.version import PYEVTK_VERSION
 
 def readme(fname):
@@ -47,6 +45,10 @@ setup(
     packages = ['evtk'],
     package_dir = {'evtk' : 'src'},
     package_data = {'evtk' :  ['LICENSE', 'examples/*.py']},
+    install_requires = [
+        "numpy>=1.8",
+        "scipy>=1.2"
+    ],
     project_urls={
         "Bug Tracker": "https://github.com/paulo-herrera/PyEVTK",
         "Documentation": "https://github.com/paulo-herrera/PyEVTK",

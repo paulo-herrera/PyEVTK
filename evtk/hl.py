@@ -1,27 +1,26 @@
-# ***********************************************************************************
-# * Copyright 2010 - 2019 Paulo A. Herrera. All rights reserved.                    * 
-# *                                                                                 *
-# * Redistribution and use in source and binary forms, with or without              *
-# * modification, are permitted provided that the following conditions are met:     *
-# *                                                                                 *
-# *  1. Redistributions of source code must retain the above copyright notice,      *
-# *  this list of conditions and the following disclaimer.                          *
-# *                                                                                 *
-# *  2. Redistributions in binary form must reproduce the above copyright notice,   *
-# *  this list of conditions and the following disclaimer in the documentation      *
-# *  and/or other materials provided with the distribution.                         *
-# *                                                                                 *
-# * THIS SOFTWARE IS PROVIDED BY PAULO A. HERRERA ``AS IS'' AND ANY EXPRESS OR      *
-# * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF    *
-# * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO      *
-# * EVENT SHALL <COPYRIGHT HOLDER> OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,        *
-# * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,  *
-# * BUT NOT LIMITED TO, PROCUREMEN OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,    *
-# * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY           *
-# * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING  *
-# * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS              *
-# * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                    *
-# ***********************************************************************************
+######################################################################################
+# MIT License
+# 
+# Copyright (c) 2010-2021 Paulo A. Herrera
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+######################################################################################
 
 # **************************************
 # *  High level Python library to      *
@@ -142,18 +141,15 @@ def imageToVTK(path, origin = (0.0,0.0,0.0), spacing = (1.0,1.0,1.0), cellData =
     return w.getFileName()
 
 # ==============================================================================
-def gridToVTK(path, x, y, z, cellData = None, pointData = None, comments = None):
+def rectilinearToVTK(path, x, y, z, cellData = None, pointData = None, comments = None):
     """
         Writes data values as a rectilinear or rectangular grid.
 
         PARAMETERS:
             path: name of the file without extension where data should be saved.
-            x, y, z: coordinates of the nodes of the grid. They can be 1D or 3D depending if
-                     the grid should be saved as a rectilinear or logically structured grid, respectively.
-                     Arrays should contain coordinates of the nodes of the grid.
-                     If arrays are 1D, then the grid should be Cartesian, i.e. faces in all cells are orthogonal.
-                     If arrays are 3D, then the grid should be logically structured with hexahedral cells.
-                     In both cases the arrays dimensions should be equal to the number of nodes of the grid.
+            x, y, z: coordinates of the nodes of the grid as 1D arrays.
+                     The grid should be Cartesian, i.e. faces in all cells are orthogonal.
+                     Arrays size should be equal to the number of nodes of the grid in each direction.
             cellData: dictionary containing arrays with cell centered data.
                       Keys should be the names of the data arrays.
                       Arrays must have the same dimensions in all directions and must contain 
@@ -169,52 +165,156 @@ def gridToVTK(path, x, y, z, cellData = None, pointData = None, comments = None)
             Full path to saved file.
 
     """
+    assert (x.ndim == 1 and y.ndim == 1 and z.ndim == 1), "Wrong array dimension"
+    ftype = VtkRectilinearGrid
+    nx, ny, nz = x.size - 1, y.size - 1, z.size - 1
     # Extract dimensions
     start = (0,0,0)
-    nx = ny = nz = 0
-
-    if (x.ndim == 1 and y.ndim == 1 and z.ndim == 1):
-        nx, ny, nz = x.size - 1, y.size - 1, z.size - 1
-        isRect = True
-        ftype = VtkRectilinearGrid
-    elif (x.ndim == 3 and y.ndim == 3 and z.ndim == 3):
-        s = x.shape
-        nx, ny, nz = s[0] - 1, s[1] - 1, s[2] - 1
-        isRect = False
-        ftype = VtkStructuredGrid
-    else:
-        assert(False)
-    end = (nx, ny, nz)
-
-
+    end   = (nx, ny, nz)
+    
     w =  VtkFile(path, ftype)
     if comments: w.addComments(comments)
     w.openGrid(start = start, end = end)
     w.openPiece(start = start, end = end)
 
-    if isRect:
-        w.openElement("Coordinates")
-        w.addData("x_coordinates", x)
-        w.addData("y_coordinates", y)
-        w.addData("z_coordinates", z)
-        w.closeElement("Coordinates")
-    else:
-        w.openElement("Points")
-        w.addData("points", (x,y,z))
-        w.closeElement("Points")
+    w.openElement("Coordinates")
+    w.addData("x_coordinates", x)
+    w.addData("y_coordinates", y)
+    w.addData("z_coordinates", z)
+    w.closeElement("Coordinates")
 
     _addDataToFile(w, cellData, pointData)
     w.closePiece()
     w.closeGrid()
     # Write coordinates
-    if isRect:
-        w.appendData(x).appendData(y).appendData(z)
-    else:
-        w.appendData( (x,y,z) )
+    w.appendData(x).appendData(y).appendData(z)
     # Write data
     _appendDataToFile(w, cellData, pointData)
     w.save()
     return w.getFileName()
+    
+
+def structuredToVTK(path, x, y, z, cellData = None, pointData = None, comments = None):
+    """
+        Writes data values as a rectilinear or rectangular grid.
+
+        PARAMETERS:
+            path: name of the file without extension where data should be saved.
+            x, y, z: coordinates of the nodes of the grid as 3D arrays.
+                     The grid should be structured, i.e. all cells should have the same number of neighbors.
+                     Arrays size in each dimension should be equal to the number of nodes of the grid in each direction.
+            cellData: dictionary containing arrays with cell centered data.
+                      Keys should be the names of the data arrays.
+                      Arrays must have the same dimensions in all directions and must contain 
+                      only scalar data.
+            pointData: dictionary containing arrays with node centered data.
+                       Keys should be the names of the data arrays.
+                       Arrays must have same dimension in each direction and 
+                       they should be equal to the dimensions of the cell data plus one and
+                       must contain only scalar data.
+            comments: list of comment strings, which will be added to the header section of the file.
+            
+        RETURNS:
+            Full path to saved file.
+
+    """
+    assert (x.ndim == 3 and y.ndim == 3 and z.ndim == 3), "Wrong arrays dimensions"
+    
+    ftype = VtkStructuredGrid
+    s = x.shape
+    nx, ny, nz = s[0] - 1, s[1] - 1, s[2] - 1
+    start = (0,0,0)
+    end = (nx, ny, nz)
+ 
+    w =  VtkFile(path, ftype)
+    if comments: w.addComments(comments)
+    w.openGrid(start = start, end = end)
+    w.openPiece(start = start, end = end)
+    w.openElement("Points")
+    w.addData("points", (x,y,z))
+    w.closeElement("Points")
+
+    _addDataToFile(w, cellData, pointData)
+    w.closePiece()
+    w.closeGrid()
+    w.appendData( (x,y,z) )
+    _appendDataToFile(w, cellData, pointData)
+    w.save()
+    return w.getFileName()
+    
+# def gridToVTK(path, x, y, z, cellData = None, pointData = None, comments = None):
+    # """
+        # Writes data values as a rectilinear or rectangular grid.
+
+        # PARAMETERS:
+            # path: name of the file without extension where data should be saved.
+            # x, y, z: coordinates of the nodes of the grid. They can be 1D or 3D depending if
+                     # the grid should be saved as a rectilinear or logically structured grid, respectively.
+                     # Arrays should contain coordinates of the nodes of the grid.
+                     # If arrays are 1D, then the grid should be Cartesian, i.e. faces in all cells are orthogonal.
+                     # If arrays are 3D, then the grid should be logically structured with hexahedral cells.
+                     # In both cases the arrays dimensions should be equal to the number of nodes of the grid.
+            # cellData: dictionary containing arrays with cell centered data.
+                      # Keys should be the names of the data arrays.
+                      # Arrays must have the same dimensions in all directions and must contain 
+                      # only scalar data.
+            # pointData: dictionary containing arrays with node centered data.
+                       # Keys should be the names of the data arrays.
+                       # Arrays must have same dimension in each direction and 
+                       # they should be equal to the dimensions of the cell data plus one and
+                       # must contain only scalar data.
+            # comments: list of comment strings, which will be added to the header section of the file.
+            
+        # RETURNS:
+            # Full path to saved file.
+
+    # """
+    # # Extract dimensions
+    # start = (0,0,0)
+    # nx = ny = nz = 0
+
+    # if (x.ndim == 1 and y.ndim == 1 and z.ndim == 1):
+        # nx, ny, nz = x.size - 1, y.size - 1, z.size - 1
+        # isRect = True
+        # ftype = VtkRectilinearGrid
+    # elif (x.ndim == 3 and y.ndim == 3 and z.ndim == 3):
+        # s = x.shape
+        # nx, ny, nz = s[0] - 1, s[1] - 1, s[2] - 1
+        # isRect = False
+        # ftype = VtkStructuredGrid
+    # else:
+        # assert(False)
+    # end = (nx, ny, nz)
+
+
+    # w =  VtkFile(path, ftype)
+    # if comments: w.addComments(comments)
+    # w.openGrid(start = start, end = end)
+    # w.openPiece(start = start, end = end)
+
+    # if isRect:
+        # w.openElement("Coordinates")
+        # w.addData("x_coordinates", x)
+        # w.addData("y_coordinates", y)
+        # w.addData("z_coordinates", z)
+        # w.closeElement("Coordinates")
+    # else:
+        # w.openElement("Points")
+        # w.addData("points", (x,y,z))
+        # w.closeElement("Points")
+
+    # _addDataToFile(w, cellData, pointData)
+    # w.closePiece()
+    # w.closeGrid()
+    # # Write coordinates
+    # if isRect:
+        # w.appendData(x).appendData(y).appendData(z)
+    # else:
+        # w.appendData( (x,y,z) )
+    # # Write data
+    # _appendDataToFile(w, cellData, pointData)
+    # w.save()
+    # return w.getFileName()
 
 
 # ==============================================================================
@@ -301,8 +401,10 @@ def pointsToVTKAsTIN(path, x, y, z, data = None, comments = None, ndim = 2):
         REQUIRES: Scipy > 1.2.
     """
     # TODO: Check if it makes and it would be possible to add cellData.
-    
-    from scipy.spatial import Delaunay
+    try:
+    	from scipy.spatial import Delaunay
+    except:
+        print("Failed to import scipy.spatial. Please install it if it is not installed.")
 
     assert len(x) == len(y) and len(x) == len(z)
     assert (ndim == 2) or (ndim == 3)

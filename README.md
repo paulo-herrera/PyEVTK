@@ -45,8 +45,8 @@ source tree provide enough information to start using the package.
     - Scipy only to export points as a triangular irregular network (TIN).
       Tested with Scipy 1.2.
 
-It is compatible with both Python 2 (2.7+) and Python 3 (3.3+). Since version 0.9 it is only compatible
-with VTK 6.0 and newer versions.
+It is compatible with Python 3 (3.3+). 
+Since version 0.9 it is only compatible with VTK 6.0 and newer versions.
 
 # DEVELOPMENT
 
@@ -85,10 +85,12 @@ this, while in the root directory, one can type:
 NOTE: you may have to change the Python version depending of the installed
 version on your system.
 
-To test the package one can run some of the examples, e.g.:
-./tmp/lib/python2.7/site-packages/examples/points.py
+To test the package after installation, go to the directory test and type: 
+>> python runall.py run
 
-That should create a points.vtu file in the current directory.
+That should create several VTK files that can be imported into Paraview.
+To delete all VTK files, type:
+>> python runall.py clean
 
 ## CONTRIBUTE:
 

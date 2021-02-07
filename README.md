@@ -42,7 +42,7 @@ source tree provide enough information to start using the package.
 # REQUIREMENTS
 
     - Numpy. Tested with Numpy 1.8.0 to 1.13.3.
-    - Scipy only to export points as a triangular irregular network (TIN).
+    - Scipy only to export points as a triangular irregular network (TIN) [OPTIONAL].
       Tested with Scipy 1.2.
 
 It is compatible with Python 3 (3.3+). 
@@ -85,12 +85,16 @@ this, while in the root directory, one can type:
 NOTE: you may have to change the Python version depending of the installed
 version on your system.
 
-To test the package after installation, go to the directory test and type: 
+To test the package after installation, go to the directory evtk/examples and type: 
 >> python runall.py run
 
 That should create several VTK files that can be imported into Paraview.
 To delete all VTK files, type:
 >> python runall.py clean
+
+To generate distribution files (tar.gz and .whl files) in build directory:
+    1. python setup.py sdist
+    2. python setup.py bdist_wheel
 
 ## CONTRIBUTE:
 

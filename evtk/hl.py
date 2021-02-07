@@ -28,7 +28,10 @@
 # **************************************
 
 from .vtk import * # VtkFile, VtkUnstructuredGrid, etc.
-import numpy as np
+try:
+    import numpy as np
+except:
+    print("Numpy is not installed. Please install it before running EVTK again.")
 
 # =================================
 #       Helper functions

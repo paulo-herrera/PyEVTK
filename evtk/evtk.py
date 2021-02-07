@@ -23,8 +23,11 @@
 ######################################################################################
 
 import struct
-import numpy as np
 import sys
+try:
+    import numpy as np
+except:
+    print("Numpy is not installed. Please install it before running EVTK again.")
 
 # Map numpy dtype to struct format
 np_to_struct = { 'int8'    : 'b',

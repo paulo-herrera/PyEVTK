@@ -93,6 +93,7 @@ To delete all VTK files, type:
 >> python runall.py clean
 
 To generate distribution files (tar.gz and .whl files) in build directory:
+
     1. python setup.py sdist
     2. python setup.py bdist_wheel
 

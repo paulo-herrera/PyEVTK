@@ -22,19 +22,15 @@
 # SOFTWARE.
 ######################################################################################
 
-import setuptools                          # needed to create wheel file
-from distutils.core import setup
-from evtk.version import PYEVTK_VERSION
+from setuptools import setup
 
-def readme(fname):
-    with open(fname, 'r') as f:
-        return f.read()
+exec(open("evtk/version.py").read())
 
 setup(
     name = 'evtk',
-    version = PYEVTK_VERSION,
+    version = __version__,
     description = 'Exports data as binary VTK files',
-    long_description = readme('README.md'),
+    long_description = open("README.md").read(),
     author = 'Paulo Herrera',
     author_email = 'paulo.herrera.eirl@gmail.com',
     url = 'https://github.com/paulo-herrera/PyEVTK.git',

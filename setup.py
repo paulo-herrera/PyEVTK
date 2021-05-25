@@ -28,7 +28,7 @@ exec(open("evtk/version.py").read())
 
 setup(
     name = 'evtk',
-    version = __version__,
+    version = PYEVTK_VERSION,
     description = 'Exports data as binary VTK files',
     long_description = open("README.md").read(),
     author = 'Paulo Herrera',

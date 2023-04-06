@@ -405,7 +405,7 @@ def pointsToVTKAsTIN(path, x, y, z, data = None, comments = None, ndim = 2):
     """
     # TODO: Check if it makes and it would be possible to add cellData.
     try:
-    	from scipy.spatial import Delaunay
+        from scipy.spatial import Delaunay
     except:
         print("Failed to import scipy.spatial. Please install it if it is not installed.")
 
@@ -439,7 +439,9 @@ def pointsToVTKAsTIN(path, x, y, z, data = None, comments = None, ndim = 2):
     for i in range(ncells): offset[i] = (i + 1) * 3
         
     cell_type = np.ones(ncells) * VtkTriangle.tid
-    unstructuredGridToVTK(path, x, y, z, connectivity = conn, offsets = offset, cell_types = cell_type, cellData = None, pointData = {"Elevation" : z}, comments = None)
+    
+    if not data: data = {"Elevation" : z}
+    unstructuredGridToVTK(path, x, y, z, connectivity = conn, offsets = offset, cell_types = cell_type, cellData = None, pointData = data, comments = None)
         
 # ==============================================================================
 def linesToVTK(path, x, y, z, cellData = None, pointData = None, comments = None ):

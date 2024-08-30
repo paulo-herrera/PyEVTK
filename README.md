@@ -33,7 +33,8 @@ pointsToVTKAsTIN("./open_pit", x, y, z, ndim = ndim, data = {"1_temp" : temp}, c
 # INSTALLATION
 
 Go to the source directory and type:
-python setup.py install
+
+>>> python setup.py install
 
 
 # DOCUMENTATION

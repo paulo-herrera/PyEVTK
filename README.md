@@ -39,6 +39,20 @@ python setup.py install
 This file together with the included examples in the examples directory in the
 source tree provide enough information to start using the package.
 
+# SUPPORTED GRIDS
+
+PyEVTK supports all grid formats included in VTK. For example,
+
+Image:
+<a href="url"><img src="https://github.com/paulo-herrera/PyEVTK/blob/master/images/image_vti.png" align="center" height="400" width="550" ></a>
+
+
+Structured:
+<a href="url"><img src="https://github.com/paulo-herrera/PyEVTK/blob/master/images/structured_vts.png" align="center" height="400" width="550" ></a>
+
+Unstructured:
+<a href="url"><img src="https://github.com/paulo-herrera/PyEVTK/blob/master/images/unstructured_vtu.png" align="center" height="400" width="550" ></a>
+
 # REQUIREMENTS
 
     - Numpy. Tested with Numpy 1.8.0 to 1.13.3.

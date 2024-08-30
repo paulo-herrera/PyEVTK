@@ -29,29 +29,35 @@ pointsToVTKAsTIN("./open_pit", x, y, z, ndim = ndim, data = {"1_temp" : temp}, c
 
 <a href="url"><img src="https://github.com/paulo-herrera/PyEVTK/blob/master/images/open_pit.png" align="center" height="400" width="550" ></a>
 
+
 # INSTALLATION
 
 Go to the source directory and type:
 python setup.py install
+
 
 # DOCUMENTATION
 
 This file together with the included examples in the examples directory in the
 source tree provide enough information to start using the package.
 
+
 # SUPPORTED GRIDS
 
 PyEVTK supports all grid formats included in VTK. For example,
 
-Image:
+**Image:**
+
 <a href="url"><img src="https://github.com/paulo-herrera/PyEVTK/blob/master/images/image_vti.png" align="center" height="400" width="550" ></a>
 
+**Structured:**
 
-Structured:
 <a href="url"><img src="https://github.com/paulo-herrera/PyEVTK/blob/master/images/structured_vts.png" align="center" height="400" width="550" ></a>
 
-Unstructured:
+**Unstructured:**
+
 <a href="url"><img src="https://github.com/paulo-herrera/PyEVTK/blob/master/images/unstructured_vtu.png" align="center" height="400" width="550" ></a>
+
 
 # REQUIREMENTS
 
@@ -61,6 +67,7 @@ Unstructured:
 
 It is compatible with Python 3 (3.3+). 
 Since version 0.9 it is only compatible with VTK 6.0 and newer versions.
+
 
 # DEVELOPMENT
 

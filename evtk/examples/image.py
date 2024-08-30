@@ -41,6 +41,10 @@ def clean():
 def run():
     print("Running image...")
 
+    # Grid dimensions
+    origin  = (0.0, 0.0 , 0.0)
+    spacing = (1.0, 1.0, 1.0)
+
     # Dimensions
     nx, ny, nz = 6, 6, 2
     ncells = nx * ny * nz
@@ -51,7 +55,7 @@ def run():
     temp = np.random.rand(npoints).reshape( (nx + 1, ny + 1, nz + 1))
 
     comments = [ "comment 1", "comment 2" ]
-    imageToVTK(FILE_PATH, cellData = {"pressure" : pressure}, pointData = {"temp" : temp}, comments = comments )
+    imageToVTK(FILE_PATH, origin, spacing, cellData = {"pressure" : pressure}, pointData = {"temp" : temp}, comments = comments )
 
 if __name__ == "__main__":
     run()

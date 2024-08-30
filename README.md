@@ -82,6 +82,11 @@ this, while in the root directory, one can type:
     1. python setup.py build --debug install --prefix=./tmp
     2. export PYTHONPATH=./tmp/lib/python2.7/site-packages/:$PYTHONPATH
 
+In more recent versions of Python, it may be better to use:
+
+    1. python setup.py install --install-lib PATH_TO_DIR
+    2. export PYTHONPATH=$PATH_TO_DIR:$PYTHONPATH
+    
 NOTE: you may have to change the Python version depending of the installed
 version on your system.
 
